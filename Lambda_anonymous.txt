@@ -1,0 +1,104 @@
+Lambda Expression in Scala. Lambda Expression refers to an expression that uses an anonymous function instead of variable or value. Lambda expressions are more convenient when we have a simple function to be used in one place.
+
+
+--Define functions:
+def max(m: Int, n: Int): Int = if(m > n) m else n
+val max: (Int, Int) => Int = (m: Int, n: Int) => if(m > n) m else n
+	
+
+--Lambda expression in variable
+// lambda expression 
+    val ex1 = (x:Int) => x + 2
+    val ex2 = (x:Int, y:Int) => x * y 
+      
+    println(ex1(7)) 
+    println(ex2(2, 3))
+
+
+--Put Lambda expression in Map
+
+    val l1 = List(1, 1, 2, 3, 5, 8) 
+    val l2 = List(13, 21, 34) 
+      
+    // reusable lambda 
+    val func = (x:Int) => x * x 
+  
+    // squaring each element of the lists 
+    val res1 = l1.map( func ) 
+    val res2 = l2.map( func ) 
+      
+    println(res1) 
+    println(res2)
+
+
+--Lambda can also be used as a parameter to a function
+
+   def transform( x:Int, f:Int => Double)=f(x)
+   val res = transform(2, r => 3.14 * r * r) 
+   println(res)   
+
+
+--Lambda with List parameter
+
+  def transform( l:List[Int], f:Int => Double)=l.map(f)
+  val res = transform(List(1, 2, 3), r => 3.14 * r * r) 
+  println(res) 
+
+
+
+--Anonymous Functions in Scala
+
+	Example:
+
+	(z:Int, y:Int)=> z*y
+	Or
+	(_:Int)*(_Int)
+
+
+	
+--Creating anonymous functions 
+  var myfc1 = (str1:String, str2:String) => str1 + str2
+  var myfc2 = (_:String) + (_:String) 
+
+  println(myfc1("Geeks", "12Geeks")) 
+  println(myfc2("Geeks", "forGeeks"))
+
+
+
+
+--Example1:
+  val  filter = ( predicate :Int => Boolean, xs :List[Int] )  =>  {
+      for(  x <- xs;  if predicate( x )  )  yield x
+  }
+
+  val even =  ( x :Int ) => x % 2 == 0
+  val odd =  ( x :Int ) => x % 2 == 1
+  val candidates = List( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ) 
+  val evenValues = filter( even, candidates )
+  val oddValues = filter( odd, candidates )
+
+--Example2:
+
+  def addFive(value: Int): Int = value+5
+
+  def processRange(start: Int, finish: Int, processor: Int => AnyVal): Unit = {
+   for (i <- start to finish)
+   println(processor(i))
+  }
+
+  def moneyTransfer(amount: Double, providerFee: Double => Double): Double = {
+   amount + 10 + providerFee(amount)
+  }
+  def providerA(money: Double) = money * 0.05
+
+  println(moneyTransfer(100, providerA))
+  //The output is 115.0
+
+
+--Example3
+
+  def moneyTransfer(amount: Double, providerFee: Double => Double): Double = {
+   amount + 10 + providerFee(amount)
+  }
+  println(moneyTransfer(100, moneyTransfer(250, m => m / 10)))
+  //The output is 285.0
