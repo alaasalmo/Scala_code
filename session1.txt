@@ -282,7 +282,20 @@ C. foeach
  def func(a:Int,b:Int=7){
        println(a*b)
      }
+     
+ --Scala parameters
  
+ def sum(args:Int*):Int={
+    var result=0
+    for(arg<-args){
+    result+=arg
+ }
+ 
+ 
+ scala> sum(1)
+ scala> sum(2,3)
+ scala> sum(4,5,2,7)
+     
  --Run in List in parallel
 
     val concurrency:Int=2
