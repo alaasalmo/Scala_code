@@ -277,6 +277,11 @@ C. foeach
     res2: List[Array[Int]] = List(Array(1, 2), Array(4, 5))
     
  
+ --Default aragument
+ 
+ def func(a:Int,b:Int=7){
+       println(a*b)
+     }
  
  --Run in List in parallel
 
