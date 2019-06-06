@@ -1,0 +1,310 @@
+--Accumlation
+
+def sum(ints: Seq[Int]): Int = ints.foldLeft(0)((a,b) => a + b)
+
+--getOrElse
+jsonMap.get("hasHeader").map(_ == "Y").getOrElse(false)
+
+--Collections
+
+1-Array
+  val numNames = Array("zero", "one", "two")
+  val numNames2 = Array.apply("zero", "one", "two")
+
+2-List
+  val oneTwo = List(1, 2)
+  val threeFour = List(3, 4)
+  val oneTwoThreeFour = oneTwo ::: threeFour
+  println(""+ oneTwo +" and "+ threeFour +" were not mutated.")
+  println("Thus, "+ oneTwoThreeFour +" is a new list.")
+
+3- Merge two lists
+List("a", "b") ::: List("c", "d")
+
+4- Set (trait)
+  scala.collection.immutable
+  scala.collection.mutable
+
+  HashSet(Object)
+
+  scala.collection.immutable
+  scala.collection.mutable
+
+  Example:
+
+  import scala.collection.mutable.Set
+  val movieSet = Set("Hitch", "Poltergeist")
+  movieSet += "Shrek"
+  println(movieSet)
+
+5- Map (trait)
+   scala.collection.immutable
+   scala.collection.mutable
+
+   HashMap (Object)
+   scala.collection.immutable
+   scala.collection.mutable
+
+   Example
+   import scala.collection.mutable.Map
+   val treasureMap = Map[Int, String]()
+   treasureMap += (1 -> "Go to island.")
+   treasureMap += (2 -> "Find big X on ground.")
+   treasureMap += (3 -> "Dig.")
+   println(treasureMap(2))
+   
+   
+-- Loop Array
+
+ A. While
+
+  def printArgs(args: Array[String]): Unit = {
+     var i = 0
+     while (i < args.length) {
+      println(args(i))
+      i += 1
+    }
+  }
+
+B. For
+
+   def printArgs(args: Array[String]): Unit = {
+   for (arg <- args)
+   println(arg)
+    }
+
+C. foeach 
+
+   def printArgs(args: Array[String]): Unit = {
+   args.foreach(println)
+  }
+
+
+--Singleton object
+
+  // In file ChecksumAccumulator.scala
+  import scala.collection.mutable.Map
+  object ChecksumAccumulator {
+  private val cache = Map[String, Int]()
+  def calculate(s: String): Int =
+  if (cache.contains(s))
+  cache(s)
+  else {
+  val acc = new ChecksumAccumulator
+  for (c <- s)
+  acc.add(c.toByte)
+  val cs = acc.checksum()
+  cache += (s -> cs)
+  cs
+  }
+  }
+  
+  
+--Functional programming
+
+  val oneHalf = new Rational(1, 2)
+  val twoThirds = new Rational(2, 3)
+
+  (oneHalf / 7) + (1 - twoThirds)
+  
+--Construction in the class
+
+  class Rational(n: Int, d: Int) {
+  println("Created "+ n +"/"+ d)
+  }
+
+  scala> new Rational(1, 2)  
+  
+--override
+
+  class Rational(n: Int, d: Int) {
+  override def toString = n +"/"+ d
+  }
+
+
+--require(d != 0)
+  class Rational(n: Int, d: Int) {
+  require(d != 0)
+  val numer: Int = n
+  val denom: Int = d
+  override def toString = numer +"/"+ denom
+  def add(that: Rational): Rational =
+  new Rational(
+  numer * that.denom + that.numer * denom,
+  denom * that.denom
+  )
+  }
+
+--Listing 6.1 · Rational with fields.
+  scala> val oneHalf = new Rational(1, 2)
+  oneHalf: Rational = 1/2
+  scala> val twoThirds = new Rational(2, 3)
+  twoThirds: Rational = 2/3
+  scala> oneHalf add twoThirds
+  res3: Rational = 7/6
+
+--private 
+
+  class Rational(n: Int, d: Int) {
+  require(d != 0)
+  private val g = gcd(n.abs, d.abs)
+  val numer = n / g
+  val denom = d / g
+  def this(n: Int) = this(n, 1)
+  def add(that: Rational): Rational =
+  new Rational(
+  numer * that.denom + that.numer * denom,
+  denom * that.denom
+  )
+  override def toString = numer +"/"+ denom
+  private def gcd(a: Int, b: Int): Int =
+  if (b == 0) a else gcd(b, a % b)
+  }
+  
+--EndsWith
+
+  def grep(pattern: String) =
+  for {
+  file <- filesHere
+  if file.getName.endsWith(".scala")
+  line <- fileLines(file)
+  trimmed = line.trim
+  if trimmed.matches(pattern)
+  } println(file +": "+ trimmed)
+  scala>grep(".*gcd.*")
+  
+--Condition with if statement in for loop
+
+  for (file <- filesHere if file.getName.endsWith(".scala")) {
+  yield file // Syntax error!
+  }
+  
+
+-- Match expressions
+
+    val firstArg = if (args.length > 0) args(0) else ""
+    firstArg match {
+    case "salt" => println("pepper")
+    case "chips" => println("salsa")
+    case "eggs" => println("bacon")
+    case _ => println("huh?")
+    }
+    
+
+-- Example read file
+
+    import scala.io.Source
+    object LongLines {
+    def processFile(filename: String, width: Int) {
+    val source = Source.fromFile(filename)
+    for (line <- source.getLines)
+    processLine(filename, width, line)
+    }
+    private def processLine(filename: String,
+    width: Int, line: String) {
+    if (line.length > width)
+    println(filename +": "+ line.trim)
+    }
+    }
+    
+--Currying
+    def plainOldSum(x: Int, y: Int) = x + y
+    plainOldSum(1, 2)
+
+    def curriedSum(x: Int)(y: Int) = x + y
+    curriedSum(1)(2)
+    
+
+--Pass function as variable
+    def withPrintWriter(file: File, op: PrintWriter => Unit) {
+    val writer = new PrintWriter(file)
+    try {
+    op(writer)
+    } finally {
+    writer.close()
+    }
+    }
+
+
+    scala>withPrintWriter(
+    new File("date.txt"),
+    writer => writer.println(new java.util.Date)
+    )
+    
+
+--OOP
+  A-abstract
+  abstract class Element {
+  def contents: Array[String]
+  }
+
+  scala> new Element
+  <console>:5: error: class Element is abstract;
+  cannot be instantiated
+  new Element
+  
+
+--Divide Set to sub sets (groupBy, partition, span,splitAt,sliding)
+
+    val x = List(15, 10, 5, 8, 20, 12)
+
+    scala> val y = x.groupBy(_ > 10)
+    y: Map[Boolean,List[Int]] = Map(false -> List(10, 5, 8), true -> List(15, 20, 12))
+
+    scala> val y = x.partition(_ > 10)
+    y: (List[Int], List[Int]) = (List(15, 20, 12), List(10, 5, 8))
+
+    scala> val y = x.span(_ < 20)
+    y: (List[Int], List[Int]) = (List(15, 10, 5, 8), List(20, 12))
+
+    scala> val y = x.splitAt(2)
+    y: (List[Int], List[Int]) = (List(15, 10), List(5, 8, 20, 12))
+
+
+    scala> val nums = (1 to 5).toArray
+    nums: Array[Int] = Array(1, 2, 3, 4, 5)
+
+    // size = 2
+    scala> nums.sliding(2).toList
+    res0: List[Array[Int]] = List(Array(1, 2), Array(2, 3), Array(3, 4), Array(4, 5))
+
+    // size = 2, step = 2
+    scala> nums.sliding(2,2).toList
+    res1: List[Array[Int]] = List(Array(1, 2), Array(3, 4), Array(5))
+
+    // size = 2, step = 3
+    scala> nums.sliding(2,3).toList
+    res2: List[Array[Int]] = List(Array(1, 2), Array(4, 5))
+    
+ 
+ 
+ --Run in List in parallel
+
+    val concurrency:Int=2
+
+    var sqlList:List[String]=List()
+    sqlList="sql1"::sqlList
+    sqlList="sql2"::sqlList
+    sqlList="sql3"::sqlList
+    sqlList="sql4"::sqlList
+    sqlList="sql5"::sqlList
+    sqlList="sql6"::sqlList
+    sqlList="sql7"::sqlList
+
+    def split[A](xs: List[A], n: Int): List[List[A]] = {
+      if (xs.size <= n) xs :: Nil
+      else (xs take n) :: split(xs drop n, n)
+    }
+
+    val l=split(sqlList, concurrency)
+    var s:Int=0
+    l.par.foreach(x=> {
+       s+=1
+       for(y<-x)
+         {
+           print("*"+s+" "+ y +"*")
+         }
+      println("##")
+    }
+    )
+
