@@ -5,7 +5,12 @@ Lambda expressions are more convenient when we have a simple function to be used
 --Define functions:
 def max(m: Int, n: Int): Int = if(m > n) m else n
 val max: (Int, Int) => Int = (m: Int, n: Int) => if(m > n) m else n
-	
+
+--Lambda example
+val max: (Int, Int) => Int = (m: Int, n: Int) => if(m > n) m else n
+val max2 = (m: Int, n: Int) => if(m > n) m else n
+def findMax(i:Int,j:Int,f:(Int,Int)=>Int):Int = f(i,j)
+print(findMax(5,7,max2))
 
 --Lambda expression in variable
 // lambda expression 
