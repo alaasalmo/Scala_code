@@ -1,4 +1,5 @@
-Lambda Expression in Scala. Lambda Expression refers to an expression that uses an anonymous function instead of variable or value. Lambda expressions are more convenient when we have a simple function to be used in one place.
+Lambda Expression in Scala. Lambda Expression refers to an expression that uses an anonymous function instead of variable or value.
+Lambda expressions are more convenient when we have a simple function to be used in one place.
 
 
 --Define functions:
